@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Box, Paper, Typography, Grid, Chip } from '@mui/material';
 import { createChart } from 'lightweight-charts';
 import { styled } from '@mui/material/styles';
@@ -18,59 +18,98 @@ const MetricCard = styled(Paper)(({ theme }) => ({
 }));
 
 const TradingDashboard = ({ selectedAsset, timeframe }) => {
-  const [chartData, setChartData] = useState([]);
-  const [metrics, setMetrics] = useState({
+  const chartContainerRef = useRef(null);
+  const chartRef = useRef(null);
+  const seriesRef = useRef(null);
+  const [chartData, setChartData] = React.useState([]);
+  const [metrics, setMetrics] = React.useState({
     currentPrice: 0,
     change: 0,
     high: 0,
     low: 0,
     volume: 0,
   });
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Initialize chart
-    const chart = createChart(document.getElementById('price-chart'), {
-      width: document.getElementById('price-chart').clientWidth,
-      height: 400,
-      layout: {
-        background: { color: '#0a1929' },
-        textColor: '#d1d4dc',
-      },
-      grid: {
-        vertLines: { color: '#1e2d3d' },
-        horzLines: { color: '#1e2d3d' },
-      },
-    });
+    if (!chartContainerRef.current) return;
 
-    const candlestickSeries = chart.addCandlestickSeries({
-      upColor: '#26a69a',
-      downColor: '#ef5350',
-      borderVisible: false,
-      wickUpColor: '#26a69a',
-      wickDownColor: '#ef5350',
-    });
+    try {
+      // Create chart instance
+      const chart = createChart(chartContainerRef.current, {
+        width: chartContainerRef.current.clientWidth,
+        height: 400,
+        layout: {
+          background: { color: '#1e1e1e' },
+          textColor: '#d1d4dc',
+        },
+        grid: {
+          vertLines: { color: '#2B2B43' },
+          horzLines: { color: '#2B2B43' },
+        },
+      });
 
-    // Fetch and update chart data
-    const fetchChartData = async () => {
-      try {
-        // TODO: Replace with actual API call
-        const response = await fetch(`/api/market-data/${selectedAsset}?timeframe=${timeframe}`);
-        const data = await response.json();
-        setChartData(data.candles);
-        candlestickSeries.setData(data.candles);
-        setMetrics(data.metrics);
-      } catch (error) {
-        console.error('Error fetching chart data:', error);
-      }
-    };
+      // Create candlestick series
+      const candlestickSeries = chart.addCandlestickSeries({
+        upColor: '#26a69a',
+        downColor: '#ef5350',
+        borderVisible: false,
+        wickUpColor: '#26a69a',
+        wickDownColor: '#ef5350',
+      });
 
-    fetchChartData();
+      // Store references
+      chartRef.current = chart;
+      seriesRef.current = candlestickSeries;
 
-    // Cleanup
-    return () => {
-      chart.remove();
-    };
+      // Fetch chart data
+      const fetchChartData = async () => {
+        try {
+          const response = await fetch(`/api/chart/${selectedAsset}?timeframe=${timeframe}`);
+          const data = await response.json();
+          if (data && data.data) {
+            candlestickSeries.setData(data.data);
+            setChartData(data.data);
+            setMetrics(data.metrics);
+          }
+        } catch (err) {
+          console.error('Error fetching chart data:', err);
+          setError('Failed to load chart data');
+        }
+      };
+
+      fetchChartData();
+
+      // Handle resize
+      const handleResize = () => {
+        if (chartContainerRef.current) {
+          chart.applyOptions({
+            width: chartContainerRef.current.clientWidth,
+          });
+        }
+      };
+
+      window.addEventListener('resize', handleResize);
+
+      return () => {
+        window.removeEventListener('resize', handleResize);
+        if (chartRef.current) {
+          chartRef.current.remove();
+        }
+      };
+    } catch (err) {
+      console.error('Error initializing chart:', err);
+      setError('Failed to initialize chart');
+    }
   }, [selectedAsset, timeframe]);
+
+  if (error) {
+    return (
+      <Paper sx={{ p: 2, height: '100%' }}>
+        <Typography color="error">{error}</Typography>
+      </Paper>
+    );
+  }
 
   return (
     <Box>
@@ -132,7 +171,7 @@ const TradingDashboard = ({ selectedAsset, timeframe }) => {
       </Grid>
 
       <Paper sx={{ p: 2 }}>
-        <ChartContainer id="price-chart" />
+        <ChartContainer ref={chartContainerRef} />
       </Paper>
     </Box>
   );

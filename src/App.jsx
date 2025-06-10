@@ -1,17 +1,19 @@
-import { useState } from 'react';
-import { ThemeProvider, createTheme } from '@mui/material';
-import CssBaseline from '@mui/material/CssBaseline';
-import Box from '@mui/material/Box';
-import { styled } from '@mui/material/styles';
-
-// Components
-import Header from './components/common/Header';
-import Sidebar from './components/common/Sidebar';
+import React, { useState, useEffect } from 'react';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { Box, CssBaseline } from '@mui/material';
+import Header from './components/layout/Header';
+import Sidebar from './components/layout/Sidebar';
 import TradingDashboard from './components/trading/TradingDashboard';
 import AssetAnalysis from './components/trading/AssetAnalysis';
 import NewsSentiment from './components/trading/NewsSentiment';
+import { startMockServer } from './mockServer';
 
-const theme = createTheme({
+// Start mock server in development
+if (process.env.NODE_ENV === 'development') {
+  startMockServer();
+}
+
+const darkTheme = createTheme({
   palette: {
     mode: 'dark',
     primary: {
@@ -21,51 +23,48 @@ const theme = createTheme({
       main: '#f50057',
     },
     background: {
-      default: '#0a1929',
-      paper: '#132f4c',
+      default: '#121212',
+      paper: '#1e1e1e',
     },
   },
 });
-
-const MainContent = styled(Box)(({ theme }) => ({
-  flexGrow: 1,
-  padding: theme.spacing(3),
-  marginLeft: 240, // Width of the sidebar
-  marginTop: 64, // Height of the header
-  minHeight: 'calc(100vh - 64px)',
-  backgroundColor: theme.palette.background.default,
-}));
 
 function App() {
   const [selectedAsset, setSelectedAsset] = useState('EUR/USD');
   const [timeframe, setTimeframe] = useState('1h');
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={darkTheme}>
       <CssBaseline />
-      <Box sx={{ display: 'flex' }}>
+      <Box sx={{ display: 'flex', minHeight: '100vh' }}>
         <Header />
         <Sidebar 
           selectedAsset={selectedAsset}
           onAssetSelect={setSelectedAsset}
           timeframe={timeframe}
-          onTimeframeSelect={setTimeframe}
+          onTimeframeChange={setTimeframe}
         />
-        <MainContent>
-          <TradingDashboard 
-            selectedAsset={selectedAsset}
-            timeframe={timeframe}
-          />
-          <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2, mt: 2 }}>
-            <AssetAnalysis 
-              asset={selectedAsset}
-              timeframe={timeframe}
-            />
-            <NewsSentiment 
-              asset={selectedAsset}
-            />
+        <Box
+          component="main"
+          sx={{
+            flexGrow: 1,
+            p: 3,
+            mt: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 2,
+          }}
+        >
+          <TradingDashboard selectedAsset={selectedAsset} timeframe={timeframe} />
+          <Box sx={{ display: 'flex', gap: 2 }}>
+            <Box sx={{ flex: 1 }}>
+              <AssetAnalysis selectedAsset={selectedAsset} timeframe={timeframe} />
+            </Box>
+            <Box sx={{ flex: 1 }}>
+              <NewsSentiment selectedAsset={selectedAsset} />
+            </Box>
           </Box>
-        </MainContent>
+        </Box>
       </Box>
     </ThemeProvider>
   );
