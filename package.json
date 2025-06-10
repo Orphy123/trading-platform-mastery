@@ -10,9 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@emotion/react": "^11.13.3",
-    "@emotion/styled": "^11.13.0",
-    "@mui/material": "^6.0.2",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/icons-material": "^7.1.1",
+    "@mui/material": "^6.4.12",
     "@supabase/supabase-js": "^2.47.12",
     "@types/prop-types": "^15.7.14",
     "lightweight-charts": "^5.0.7",
