@@ -13,7 +13,8 @@ const NewsSentiment = ({ selectedAsset }) => {
       
       try {
         setLoading(true);
-        const response = await fetch(`/api/news/${selectedAsset}`);
+        const encodedAsset = encodeURIComponent(selectedAsset);
+        const response = await fetch(`/api/news/${encodedAsset}`);
         const data = await response.json();
         setNews(data);
         setError(null);

@@ -25,7 +25,8 @@ const AssetAnalysis = ({ selectedAsset, timeframe }) => {
       
       try {
         setLoading(true);
-        const response = await fetch(`/api/analysis/${selectedAsset}?timeframe=${timeframe}`);
+        const encodedAsset = encodeURIComponent(selectedAsset);
+        const response = await fetch(`/api/analysis/${encodedAsset}?timeframe=${timeframe}`);
         const data = await response.json();
         setAnalysis(data);
         setError(null);
