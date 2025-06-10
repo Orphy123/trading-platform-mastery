@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Box, Paper, Typography, Grid, Chip } from '@mui/material';
+import { Box, Paper, Typography, Grid, Chip, CircularProgress } from '@mui/material';
 import { createChart } from 'lightweight-charts';
 import { styled } from '@mui/material/styles';
 
@@ -21,6 +21,8 @@ const TradingDashboard = ({ selectedAsset, timeframe }) => {
   const chartContainerRef = useRef(null);
   const chartRef = useRef(null);
   const seriesRef = useRef(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [chartData, setChartData] = React.useState([]);
   const [metrics, setMetrics] = React.useState({
     currentPrice: 0,
@@ -29,85 +31,97 @@ const TradingDashboard = ({ selectedAsset, timeframe }) => {
     low: 0,
     volume: 0,
   });
-  const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!chartContainerRef.current) return;
-
-    try {
-      // Create chart instance
-      const chart = createChart(chartContainerRef.current, {
-        width: chartContainerRef.current.clientWidth,
-        height: 400,
-        layout: {
-          background: { color: '#1e1e1e' },
-          textColor: '#d1d4dc',
-        },
-        grid: {
-          vertLines: { color: '#2B2B43' },
-          horzLines: { color: '#2B2B43' },
-        },
-      });
-
-      // Create candlestick series
-      const candlestickSeries = chart.addCandlestickSeries({
-        upColor: '#26a69a',
-        downColor: '#ef5350',
-        borderVisible: false,
-        wickUpColor: '#26a69a',
-        wickDownColor: '#ef5350',
-      });
-
-      // Store references
-      chartRef.current = chart;
-      seriesRef.current = candlestickSeries;
-
-      // Fetch chart data
-      const fetchChartData = async () => {
-        try {
-          const response = await fetch(`/api/chart/${selectedAsset}?timeframe=${timeframe}`);
-          const data = await response.json();
-          if (data && data.data) {
-            candlestickSeries.setData(data.data);
-            setChartData(data.data);
-            setMetrics(data.metrics);
-          }
-        } catch (err) {
-          console.error('Error fetching chart data:', err);
-          setError('Failed to load chart data');
+    const fetchChartData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const response = await fetch(`/api/chart/${encodeURIComponent(selectedAsset)}?timeframe=${timeframe}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch chart data');
         }
-      };
-
-      fetchChartData();
-
-      // Handle resize
-      const handleResize = () => {
+        const data = await response.json();
+        
         if (chartContainerRef.current) {
-          chart.applyOptions({
+          // Clean up existing chart
+          if (chartRef.current) {
+            chartRef.current.remove();
+          }
+
+          // Create new chart
+          const chart = createChart(chartContainerRef.current, {
             width: chartContainerRef.current.clientWidth,
+            height: 400,
+            layout: {
+              background: { color: '#1e1e1e' },
+              textColor: '#d1d4dc',
+            },
+            grid: {
+              vertLines: { color: '#2B2B43' },
+              horzLines: { color: '#2B2B43' },
+            },
           });
-        }
-      };
 
-      window.addEventListener('resize', handleResize);
+          // Create candlestick series
+          const candlestickSeries = chart.addCandlestickSeries({
+            upColor: '#26a69a',
+            downColor: '#ef5350',
+            borderVisible: false,
+            wickUpColor: '#26a69a',
+            wickDownColor: '#ef5350',
+          });
 
-      return () => {
-        window.removeEventListener('resize', handleResize);
-        if (chartRef.current) {
-          chartRef.current.remove();
+          // Set the data
+          candlestickSeries.setData(data);
+
+          // Store references
+          chartRef.current = chart;
+          seriesRef.current = candlestickSeries;
+
+          // Handle resize
+          const handleResize = () => {
+            if (chartContainerRef.current && chartRef.current) {
+              chartRef.current.applyOptions({
+                width: chartContainerRef.current.clientWidth,
+              });
+            }
+          };
+
+          window.addEventListener('resize', handleResize);
+          return () => {
+            window.removeEventListener('resize', handleResize);
+            if (chartRef.current) {
+              chartRef.current.remove();
+            }
+          };
         }
-      };
-    } catch (err) {
-      console.error('Error initializing chart:', err);
-      setError('Failed to initialize chart');
+      } catch (err) {
+        console.error('Error initializing chart:', err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (selectedAsset && timeframe) {
+      fetchChartData();
     }
   }, [selectedAsset, timeframe]);
 
+  if (loading) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 400 }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
   if (error) {
     return (
-      <Paper sx={{ p: 2, height: '100%' }}>
-        <Typography color="error">{error}</Typography>
-      </Paper>
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 400 }}>
+        <Typography color="error">Error: {error}</Typography>
+      </Box>
     );
   }
 

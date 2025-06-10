@@ -3,82 +3,89 @@ import { createServer } from 'miragejs';
 export function startMockServer() {
   createServer({
     routes() {
-      this.get('/api/chart/:asset', (schema, request) => {
+      // Handle asset parameters with slashes
+      this.namespace = 'api';
+
+      this.get('/chart/:asset', (schema, request) => {
         const { asset } = request.params;
         const { timeframe } = request.queryParams;
         
         // Generate sample candlestick data
         const data = [];
-        let basePrice = 100;
         const now = new Date();
+        let basePrice = 1.0;
         
-        for (let i = 0; i < 100; i++) {
-          const time = new Date(now - (100 - i) * 24 * 60 * 60 * 1000);
-          const open = basePrice + Math.random() * 10 - 5;
-          const high = open + Math.random() * 5;
-          const low = open - Math.random() * 5;
+        for (let i = 100; i >= 0; i--) {
+          const time = new Date(now - i * 60000); // 1 minute intervals
+          const open = basePrice;
+          const high = open * (1 + Math.random() * 0.02);
+          const low = open * (1 - Math.random() * 0.02);
           const close = (high + low) / 2;
           
           data.push({
-            time: time.toISOString().split('T')[0],
+            time: time.getTime() / 1000,
             open,
             high,
             low,
-            close
+            close,
           });
           
           basePrice = close;
         }
         
-        return { data };
+        return data;
       });
 
-      this.get('/api/analysis/:asset', (schema, request) => {
+      this.get('/analysis/:asset', (schema, request) => {
         const { asset } = request.params;
-        const { timeframe } = request.queryParams;
-        
         return {
           technicalIndicators: {
-            rsi: 65.4,
-            macd: { value: 0.5, signal: 0.3, histogram: 0.2 },
+            rsi: Math.random() * 100,
+            macd: {
+              value: Math.random() * 2 - 1,
+              signal: Math.random() * 2 - 1,
+              histogram: Math.random() * 2 - 1,
+            },
             bollingerBands: {
-              upper: 1.2345,
-              middle: 1.2000,
-              lower: 1.1655
-            }
+              upper: 1.1,
+              middle: 1.0,
+              lower: 0.9,
+            },
           },
           mlPredictions: {
-            nextPrice: 1.2150,
-            confidence: 0.85,
-            trend: 'bullish'
-          }
+            direction: Math.random() > 0.5 ? 'up' : 'down',
+            confidence: Math.random() * 100,
+            priceTarget: 1.0 + (Math.random() * 0.2 - 0.1),
+          },
         };
       });
 
-      this.get('/api/news/:asset', (schema, request) => {
+      this.get('/news/:asset', (schema, request) => {
         const { asset } = request.params;
-        
         return {
           articles: [
             {
-              title: 'Market Analysis: ' + asset + ' Shows Strong Momentum',
+              title: `${asset} shows strong momentum`,
               source: 'Financial Times',
-              sentiment: 'positive',
-              publishedAt: '2024-01-10T10:00:00Z'
+              publishedAt: new Date().toISOString(),
+              sentiment: 0.8,
             },
             {
-              title: 'Technical Outlook: ' + asset + ' Faces Resistance',
+              title: `Analysts bullish on ${asset}`,
               source: 'Bloomberg',
-              sentiment: 'neutral',
-              publishedAt: '2024-01-10T09:30:00Z'
-            }
+              publishedAt: new Date().toISOString(),
+              sentiment: 0.6,
+            },
+            {
+              title: `${asset} trading at key levels`,
+              source: 'Reuters',
+              publishedAt: new Date().toISOString(),
+              sentiment: 0.2,
+            },
           ],
-          overallSentiment: {
-            score: 0.65,
-            label: 'positive'
-          }
+          overallSentiment: 0.5,
         };
       });
-    }
+    },
   });
 } 
