@@ -1,0 +1,276 @@
+{
+  "timestamp": 1687432800000,
+  "datetime": "2023-06-22T12:00:00Z",
+  "assets": [
+    {
+      "symbol": "EUR/USD",
+      "current_signal": {
+        "signal": "BUY",
+        "signal_strength": 0.78,
+        "signal_direction": 1,
+        "price": 1.0923,
+        "timestamp": 1687432800000,
+        "datetime": "2023-06-22T12:00:00Z",
+        "timeframe": "medium",
+        "factors": {
+          "technical": 0.65,
+          "sentiment": 0.35
+        },
+        "key_indicators": {
+          "ma_crossover": "positive",
+          "rsi": "neutral",
+          "sentiment": "neutral",
+          "trend": "upward"
+        },
+        "predicted_movement": 0.012,
+        "updated_at": "2023-06-22T12:05:32Z"
+      },
+      "historical_signals": [
+        {
+          "timestamp": 1687432800000,
+          "datetime": "2023-06-22T12:00:00Z",
+          "signal": "BUY",
+          "signal_strength": 0.78,
+          "price": 1.0923
+        },
+        {
+          "timestamp": 1687346400000,
+          "datetime": "2023-06-21T12:00:00Z",
+          "signal": "HOLD",
+          "signal_strength": 0.55,
+          "price": 1.0917
+        },
+        {
+          "timestamp": 1687260000000,
+          "datetime": "2023-06-20T12:00:00Z",
+          "signal": "HOLD",
+          "signal_strength": 0.51,
+          "price": 1.0921
+        },
+        {
+          "timestamp": 1687173600000,
+          "datetime": "2023-06-19T12:00:00Z",
+          "signal": "SELL",
+          "signal_strength": 0.68,
+          "price": 1.0915
+        }
+      ]
+    },
+    {
+      "symbol": "US100",
+      "current_signal": {
+        "signal": "BUY",
+        "signal_strength": 0.92,
+        "signal_direction": 1,
+        "price": 14832.67,
+        "timestamp": 1687432800000,
+        "datetime": "2023-06-22T12:00:00Z",
+        "timeframe": "short",
+        "factors": {
+          "technical": 0.55,
+          "sentiment": 0.45
+        },
+        "key_indicators": {
+          "ma_crossover": "positive",
+          "rsi": "strong",
+          "sentiment": "positive",
+          "trend": "upward"
+        },
+        "predicted_movement": 0.85,
+        "updated_at": "2023-06-22T12:05:32Z"
+      },
+      "historical_signals": [
+        {
+          "timestamp": 1687432800000,
+          "datetime": "2023-06-22T12:00:00Z",
+          "signal": "BUY",
+          "signal_strength": 0.92,
+          "price": 14832.67
+        },
+        {
+          "timestamp": 1687346400000,
+          "datetime": "2023-06-21T12:00:00Z",
+          "signal": "BUY",
+          "signal_strength": 0.84,
+          "price": 14728.15
+        },
+        {
+          "timestamp": 1687260000000,
+          "datetime": "2023-06-20T12:00:00Z",
+          "signal": "BUY",
+          "signal_strength": 0.75,
+          "price": 14651.22
+        },
+        {
+          "timestamp": 1687173600000,
+          "datetime": "2023-06-19T12:00:00Z",
+          "signal": "HOLD",
+          "signal_strength": 0.52,
+          "price": 14532.89
+        }
+      ]
+    },
+    {
+      "symbol": "US30",
+      "current_signal": {
+        "signal": "HOLD",
+        "signal_strength": 0.63,
+        "signal_direction": 0,
+        "price": 33978.45,
+        "timestamp": 1687432800000,
+        "datetime": "2023-06-22T12:00:00Z",
+        "timeframe": "medium",
+        "factors": {
+          "technical": 0.60,
+          "sentiment": 0.40
+        },
+        "key_indicators": {
+          "ma_crossover": "neutral",
+          "rsi": "neutral",
+          "sentiment": "positive",
+          "trend": "sideways"
+        },
+        "predicted_movement": 0.003,
+        "updated_at": "2023-06-22T12:05:32Z"
+      },
+      "historical_signals": [
+        {
+          "timestamp": 1687432800000,
+          "datetime": "2023-06-22T12:00:00Z",
+          "signal": "HOLD",
+          "signal_strength": 0.63,
+          "price": 33978.45
+        },
+        {
+          "timestamp": 1687346400000,
+          "datetime": "2023-06-21T12:00:00Z",
+          "signal": "HOLD",
+          "signal_strength": 0.58,
+          "price": 33897.12
+        },
+        {
+          "timestamp": 1687260000000,
+          "datetime": "2023-06-20T12:00:00Z",
+          "signal": "BUY",
+          "signal_strength": 0.65,
+          "price": 33912.56
+        },
+        {
+          "timestamp": 1687173600000,
+          "datetime": "2023-06-19T12:00:00Z",
+          "signal": "SELL",
+          "signal_strength": 0.64,
+          "price": 33756.45
+        }
+      ]
+    },
+    {
+      "symbol": "GBP/USD",
+      "current_signal": {
+        "signal": "SELL",
+        "signal_strength": 0.71,
+        "signal_direction": -1,
+        "price": 1.2732,
+        "timestamp": 1687432800000,
+        "datetime": "2023-06-22T12:00:00Z",
+        "timeframe": "short",
+        "factors": {
+          "technical": 0.70,
+          "sentiment": 0.30
+        },
+        "key_indicators": {
+          "ma_crossover": "negative",
+          "rsi": "overbought",
+          "sentiment": "neutral",
+          "trend": "reversal"
+        },
+        "predicted_movement": -0.008,
+        "updated_at": "2023-06-22T12:05:32Z"
+      },
+      "historical_signals": [
+        {
+          "timestamp": 1687432800000,
+          "datetime": "2023-06-22T12:00:00Z",
+          "signal": "SELL",
+          "signal_strength": 0.71,
+          "price": 1.2732
+        },
+        {
+          "timestamp": 1687346400000,
+          "datetime": "2023-06-21T12:00:00Z",
+          "signal": "HOLD",
+          "signal_strength": 0.54,
+          "price": 1.2718
+        },
+        {
+          "timestamp": 1687260000000,
+          "datetime": "2023-06-20T12:00:00Z",
+          "signal": "HOLD",
+          "signal_strength": 0.52,
+          "price": 1.2721
+        },
+        {
+          "timestamp": 1687173600000,
+          "datetime": "2023-06-19T12:00:00Z",
+          "signal": "HOLD",
+          "signal_strength": 0.56,
+          "price": 1.2705
+        }
+      ]
+    },
+    {
+      "symbol": "CRUDE OIL",
+      "current_signal": {
+        "signal": "BUY",
+        "signal_strength": 0.88,
+        "signal_direction": 1,
+        "price": 74.32,
+        "timestamp": 1687432800000,
+        "datetime": "2023-06-22T12:00:00Z",
+        "timeframe": "medium",
+        "factors": {
+          "technical": 0.58,
+          "sentiment": 0.42
+        },
+        "key_indicators": {
+          "ma_crossover": "positive",
+          "rsi": "neutral",
+          "sentiment": "positive",
+          "trend": "upward"
+        },
+        "predicted_movement": 1.24,
+        "updated_at": "2023-06-22T12:05:32Z"
+      },
+      "historical_signals": [
+        {
+          "timestamp": 1687432800000,
+          "datetime": "2023-06-22T12:00:00Z",
+          "signal": "BUY",
+          "signal_strength": 0.88,
+          "price": 74.32
+        },
+        {
+          "timestamp": 1687346400000,
+          "datetime": "2023-06-21T12:00:00Z",
+          "signal": "BUY",
+          "signal_strength": 0.81,
+          "price": 73.56
+        },
+        {
+          "timestamp": 1687260000000,
+          "datetime": "2023-06-20T12:00:00Z",
+          "signal": "BUY",
+          "signal_strength": 0.73,
+          "price": 73.78
+        },
+        {
+          "timestamp": 1687173600000,
+          "datetime": "2023-06-19T12:00:00Z",
+          "signal": "HOLD",
+          "signal_strength": 0.58,
+          "price": 72.65
+        }
+      ]
+    }
+  ]
+}

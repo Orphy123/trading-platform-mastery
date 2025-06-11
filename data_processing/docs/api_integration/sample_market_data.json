@@ -1,0 +1,261 @@
+{
+  "timestamp": 1687432800000,
+  "datetime": "2023-06-22T12:00:00Z",
+  "assets": [
+    {
+      "symbol": "EUR/USD",
+      "current": {
+        "price": 1.0923,
+        "open": 1.0917,
+        "high": 1.0938,
+        "low": 1.0902,
+        "change": 0.0006,
+        "change_percent": 0.055,
+        "updated_at": "2023-06-22T12:00:00Z"
+      },
+      "historical": [
+        {
+          "timestamp": 1687432800000,
+          "datetime": "2023-06-22T12:00:00Z",
+          "open": 1.0917,
+          "high": 1.0938,
+          "low": 1.0902,
+          "close": 1.0923,
+          "volume": 5231
+        },
+        {
+          "timestamp": 1687429200000,
+          "datetime": "2023-06-22T11:00:00Z",
+          "open": 1.0921,
+          "high": 1.0929,
+          "low": 1.0912,
+          "close": 1.0917,
+          "volume": 4985
+        },
+        {
+          "timestamp": 1687425600000,
+          "datetime": "2023-06-22T10:00:00Z",
+          "open": 1.0918,
+          "high": 1.0925,
+          "low": 1.0911,
+          "close": 1.0921,
+          "volume": 5103
+        }
+      ],
+      "technical_indicators": {
+        "ma_5": 1.0919,
+        "ma_20": 1.0903,
+        "rsi": 58.42,
+        "macd": 0.0012,
+        "macd_signal": 0.0005,
+        "bb_upper": 1.0941,
+        "bb_middle": 1.0903,
+        "bb_lower": 1.0865
+      }
+    },
+    {
+      "symbol": "US100",
+      "current": {
+        "price": 14832.67,
+        "open": 14728.15,
+        "high": 14847.33,
+        "low": 14722.56,
+        "change": 104.52,
+        "change_percent": 0.71,
+        "updated_at": "2023-06-22T12:00:00Z"
+      },
+      "historical": [
+        {
+          "timestamp": 1687432800000,
+          "datetime": "2023-06-22T12:00:00Z",
+          "open": 14728.15,
+          "high": 14847.33,
+          "low": 14722.56,
+          "close": 14832.67,
+          "volume": 184562
+        },
+        {
+          "timestamp": 1687429200000,
+          "datetime": "2023-06-22T11:00:00Z",
+          "open": 14751.22,
+          "high": 14778.45,
+          "low": 14720.18,
+          "close": 14728.15,
+          "volume": 156829
+        },
+        {
+          "timestamp": 1687425600000,
+          "datetime": "2023-06-22T10:00:00Z",
+          "open": 14732.89,
+          "high": 14763.25,
+          "low": 14713.62,
+          "close": 14751.22,
+          "volume": 172451
+        }
+      ],
+      "technical_indicators": {
+        "ma_5": 14781.35,
+        "ma_20": 14596.23,
+        "rsi": 65.78,
+        "macd": 54.23,
+        "macd_signal": 32.67,
+        "bb_upper": 14892.45,
+        "bb_middle": 14596.23,
+        "bb_lower": 14300.01
+      }
+    },
+    {
+      "symbol": "US30",
+      "current": {
+        "price": 33978.45,
+        "open": 33897.12,
+        "high": 33992.56,
+        "low": 33856.78,
+        "change": 81.33,
+        "change_percent": 0.24,
+        "updated_at": "2023-06-22T12:00:00Z"
+      },
+      "historical": [
+        {
+          "timestamp": 1687432800000,
+          "datetime": "2023-06-22T12:00:00Z",
+          "open": 33897.12,
+          "high": 33992.56,
+          "low": 33856.78,
+          "close": 33978.45,
+          "volume": 138562
+        },
+        {
+          "timestamp": 1687429200000,
+          "datetime": "2023-06-22T11:00:00Z",
+          "open": 33912.56,
+          "high": 33932.11,
+          "low": 33875.23,
+          "close": 33897.12,
+          "volume": 129834
+        },
+        {
+          "timestamp": 1687425600000,
+          "datetime": "2023-06-22T10:00:00Z",
+          "open": 33896.45,
+          "high": 33921.67,
+          "low": 33864.23,
+          "close": 33912.56,
+          "volume": 135672
+        }
+      ],
+      "technical_indicators": {
+        "ma_5": 33921.34,
+        "ma_20": 33745.67,
+        "rsi": 57.45,
+        "macd": 45.67,
+        "macd_signal": 38.92,
+        "bb_upper": 34121.56,
+        "bb_middle": 33745.67,
+        "bb_lower": 33369.78
+      }
+    },
+    {
+      "symbol": "GBP/USD",
+      "current": {
+        "price": 1.2732,
+        "open": 1.2718,
+        "high": 1.2745,
+        "low": 1.2712,
+        "change": 0.0014,
+        "change_percent": 0.11,
+        "updated_at": "2023-06-22T12:00:00Z"
+      },
+      "historical": [
+        {
+          "timestamp": 1687432800000,
+          "datetime": "2023-06-22T12:00:00Z",
+          "open": 1.2718,
+          "high": 1.2745,
+          "low": 1.2712,
+          "close": 1.2732,
+          "volume": 4562
+        },
+        {
+          "timestamp": 1687429200000,
+          "datetime": "2023-06-22T11:00:00Z",
+          "open": 1.2721,
+          "high": 1.2729,
+          "low": 1.2713,
+          "close": 1.2718,
+          "volume": 4378
+        },
+        {
+          "timestamp": 1687425600000,
+          "datetime": "2023-06-22T10:00:00Z",
+          "open": 1.2724,
+          "high": 1.2731,
+          "low": 1.2718,
+          "close": 1.2721,
+          "volume": 4502
+        }
+      ],
+      "technical_indicators": {
+        "ma_5": 1.2724,
+        "ma_20": 1.2695,
+        "rsi": 59.23,
+        "macd": 0.0018,
+        "macd_signal": 0.0012,
+        "bb_upper": 1.2758,
+        "bb_middle": 1.2695,
+        "bb_lower": 1.2632
+      }
+    },
+    {
+      "symbol": "CRUDE OIL",
+      "current": {
+        "price": 74.32,
+        "open": 73.56,
+        "high": 74.45,
+        "low": 73.42,
+        "change": 0.76,
+        "change_percent": 1.03,
+        "updated_at": "2023-06-22T12:00:00Z"
+      },
+      "historical": [
+        {
+          "timestamp": 1687432800000,
+          "datetime": "2023-06-22T12:00:00Z",
+          "open": 73.56,
+          "high": 74.45,
+          "low": 73.42,
+          "close": 74.32,
+          "volume": 98562
+        },
+        {
+          "timestamp": 1687429200000,
+          "datetime": "2023-06-22T11:00:00Z",
+          "open": 73.78,
+          "high": 73.92,
+          "low": 73.48,
+          "close": 73.56,
+          "volume": 94238
+        },
+        {
+          "timestamp": 1687425600000,
+          "datetime": "2023-06-22T10:00:00Z",
+          "open": 73.65,
+          "high": 73.86,
+          "low": 73.52,
+          "close": 73.78,
+          "volume": 96745
+        }
+      ],
+      "technical_indicators": {
+        "ma_5": 73.85,
+        "ma_20": 72.45,
+        "rsi": 64.32,
+        "macd": 0.87,
+        "macd_signal": 0.42,
+        "bb_upper": 75.65,
+        "bb_middle": 72.45,
+        "bb_lower": 69.25
+      }
+    }
+  ]
+}

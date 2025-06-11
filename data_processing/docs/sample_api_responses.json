@@ -1,0 +1,50 @@
+{
+    "TwelveData": {
+        "time_series": {
+            "meta": {
+                "symbol": "EUR/USD",
+                "interval": "1min",
+                "currency_base": "Euro",
+                "currency_quote": "US Dollar",
+                "type": "Physical Currency"
+            },
+            "values": [
+                {
+                    "datetime": "2023-01-01 00:00:00",
+                    "open": "1.0701",
+                    "high": "1.0702",
+                    "low": "1.0698",
+                    "close": "1.0700",
+                    "volume": "1547"
+                }
+            ],
+            "status": "ok"
+        }
+    },
+    "Finnhub": {
+        "quote": {
+            "c": 148.56,
+            "h": 149.89,
+            "l": 147.95,
+            "o": 148.06,
+            "pc": 147.92,
+            "t": 1698346800
+        }
+    },
+    "Alpha Vantage": {
+        "Time Series FX (1min)": {
+            "2023-01-01 00:00:00": {
+                "1. open": "1.0701",
+                "2. high": "1.0702",
+                "3. low": "1.0698",
+                "4. close": "1.0700"
+            }
+        },
+        "Meta Data": {
+            "1. Information": "FX Intraday (1min) Time Series",
+            "2. From Symbol": "EUR",
+            "3. To Symbol": "USD",
+            "4. Last Refreshed": "2023-01-01 00:00:00"
+        }
+    }
+}

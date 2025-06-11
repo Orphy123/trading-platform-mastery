@@ -1,0 +1,186 @@
+{
+  "dashboard": {
+    "title": "Trading Assistant Platform",
+    "refresh_interval": 60000,
+    "layouts": {
+      "default": [
+        { "i": "market-overview", "x": 0, "y": 0, "w": 12, "h": 6 },
+        { "i": "asset-detail", "x": 0, "y": 6, "w": 12, "h": 12 },
+        { "i": "sentiment-analysis", "x": 0, "y": 18, "w": 6, "h": 8 },
+        { "i": "trading-signals", "x": 6, "y": 18, "w": 6, "h": 8 },
+        { "i": "news-feed", "x": 0, "y": 26, "w": 12, "h": 10 }
+      ],
+      "compact": [
+        { "i": "market-overview", "x": 0, "y": 0, "w": 12, "h": 4 },
+        { "i": "asset-detail", "x": 0, "y": 4, "w": 12, "h": 8 },
+        { "i": "trading-signals", "x": 0, "y": 12, "w": 12, "h": 6 }
+      ]
+    }
+  },
+  "widgets": {
+    "market-overview": {
+      "type": "market-summary",
+      "title": "Market Overview",
+      "api_endpoint": "/dashboard/summary",
+      "refresh_interval": 60000,
+      "columns": [
+        { "field": "symbol", "header": "Asset", "width": "15%" },
+        { "field": "price", "header": "Price", "width": "15%", "format": "price" },
+        { "field": "change_percent", "header": "Change", "width": "15%", "format": "percent", "colorize": true },
+        { "field": "sentiment_label", "header": "Sentiment", "width": "15%", "format": "sentiment-badge" },
+        { "field": "signal", "header": "Signal", "width": "15%", "format": "signal-badge" },
+        { "field": "signal_strength", "header": "Strength", "width": "15%", "format": "strength-bar" },
+        { "field": "actions", "header": "Actions", "width": "10%", "format": "action-buttons" }
+      ],
+      "default_sort": { "field": "change_percent", "direction": "desc" }
+    },
+    "asset-detail": {
+      "type": "asset-chart",
+      "title": "Asset Chart",
+      "api_endpoint": "/market/history/{symbol}",
+      "refresh_interval": 60000,
+      "default_symbol": "US100",
+      "timeframes": ["1h", "4h", "1d", "1w"],
+      "default_timeframe": "1d",
+      "chart_types": ["candlestick", "line", "area"],
+      "default_chart_type": "candlestick",
+      "indicators": [
+        { "name": "Moving Average", "periods": [5, 20, 50, 200] },
+        { "name": "RSI", "periods": [14] },
+        { "name": "MACD", "settings": { "fast": 12, "slow": 26, "signal": 9 } },
+        { "name": "Bollinger Bands", "settings": { "period": 20, "stdDev": 2 } }
+      ],
+      "overlay_signals": true,
+      "overlay_sentiment": true
+    },
+    "sentiment-analysis": {
+      "type": "sentiment-gauge",
+      "title": "Sentiment Analysis",
+      "api_endpoint": "/sentiment/history/{symbol}",
+      "refresh_interval": 120000,
+      "default_symbol": "US100",
+      "display_options": {
+        "current_score": true,
+        "historical_chart": true,
+        "article_count": true,
+        "key_phrases": true,
+        "ratio_breakdown": true
+      },
+      "colors": {
+        "positive": "#4caf50",
+        "neutral": "#ffc107",
+        "negative": "#f44336"
+      }
+    },
+    "trading-signals": {
+      "type": "signal-dashboard",
+      "title": "Trading Signals",
+      "api_endpoint": "/signals/latest/{symbol}",
+      "refresh_interval": 300000,
+      "default_symbol": "US100",
+      "display_options": {
+        "signal_strength_gauge": true,
+        "historical_signals": true,
+        "prediction_chart": true,
+        "factor_breakdown": true,
+        "key_indicators": true
+      },
+      "colors": {
+        "buy": "#4caf50",
+        "hold": "#ffc107",
+        "sell": "#f44336"
+      }
+    },
+    "news-feed": {
+      "type": "news-ticker",
+      "title": "Latest News",
+      "api_endpoint": "/news/{symbol}",
+      "refresh_interval": 300000,
+      "default_symbol": "all",
+      "max_items": 10,
+      "display_options": {
+        "source": true,
+        "timestamp": true,
+        "sentiment_badge": true,
+        "read_more_link": true
+      },
+      "sentiment_highlight": true
+    }
+  },
+  "color_scheme": {
+    "theme": "dark",
+    "primary": "#2196f3",
+    "secondary": "#ff9800",
+    "positive": "#4caf50",
+    "negative": "#f44336",
+    "neutral": "#ffc107",
+    "background": "#121212",
+    "surface": "#1e1e1e",
+    "card": "#2d2d2d",
+    "text": { 
+      "primary": "rgba(255, 255, 255, 0.87)",
+      "secondary": "rgba(255, 255, 255, 0.6)", 
+      "disabled": "rgba(255, 255, 255, 0.38)" 
+    }
+  },
+  "controls": {
+    "asset_selector": {
+      "type": "dropdown",
+      "default": "US100",
+      "options": [
+        { "value": "US100", "label": "NASDAQ 100" },
+        { "value": "US30", "label": "Dow Jones" },
+        { "value": "EUR/USD", "label": "EUR/USD" },
+        { "value": "GBP/USD", "label": "GBP/USD" },
+        { "value": "CRUDE OIL", "label": "Crude Oil WTI" }
+      ]
+    },
+    "timeframe_selector": {
+      "type": "button-group",
+      "default": "1d",
+      "options": [
+        { "value": "1h", "label": "1H" },
+        { "value": "4h", "label": "4H" },
+        { "value": "1d", "label": "1D" },
+        { "value": "1w", "label": "1W" },
+        { "value": "1m", "label": "1M" }
+      ]
+    },
+    "chart_type_selector": {
+      "type": "icon-button-group",
+      "default": "candlestick",
+      "options": [
+        { "value": "candlestick", "icon": "candlestick-chart" },
+        { "value": "line", "icon": "line-chart" },
+        { "value": "area", "icon": "area-chart" }
+      ]
+    },
+    "indicator_selector": {
+      "type": "multi-select",
+      "default": ["MA-20", "RSI"],
+      "options": [
+        { "value": "MA-5", "label": "MA (5)" },
+        { "value": "MA-20", "label": "MA (20)" },
+        { "value": "MA-50", "label": "MA (50)" },
+        { "value": "MA-200", "label": "MA (200)" },
+        { "value": "RSI", "label": "RSI" },
+        { "value": "MACD", "label": "MACD" },
+        { "value": "BB", "label": "Bollinger Bands" }
+      ]
+    }
+  },
+  "notifications": {
+    "enabled": true,
+    "types": [
+      { "id": "price_alert", "name": "Price Alerts", "default": true },
+      { "id": "signal_change", "name": "Signal Changes", "default": true },
+      { "id": "sentiment_shift", "name": "Major Sentiment Shifts", "default": true },
+      { "id": "news_alert", "name": "Breaking News", "default": true }
+    ],
+    "delivery": [
+      { "id": "in_app", "name": "In-App", "default": true },
+      { "id": "email", "name": "Email", "default": false },
+      { "id": "push", "name": "Push Notification", "default": false }
+    ]
+  }
+}
