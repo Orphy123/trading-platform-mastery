@@ -1,192 +1,183 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Box, Paper, Typography, Grid, Chip, CircularProgress } from '@mui/material';
-import { createChart } from 'lightweight-charts';
-import { styled } from '@mui/material/styles';
+import React, { useState, useEffect } from 'react';
+import {
+  Box,
+  Paper,
+  Grid,
+  Typography,
+  Card,
+  CardContent,
+  Button,
+  Chip,
+  CircularProgress
+} from '@mui/material';
+import {
+  TrendingUp as TrendingUpIcon,
+  TrendingDown as TrendingDownIcon,
+  Warning as WarningIcon
+} from '@mui/icons-material';
+import { Line } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+} from 'chart.js';
 
-const ChartContainer = styled(Box)(({ theme }) => ({
-  height: '400px',
-  width: '100%',
-  position: 'relative',
-}));
-
-const MetricCard = styled(Paper)(({ theme }) => ({
-  padding: theme.spacing(2),
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  gap: theme.spacing(1),
-}));
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const TradingDashboard = ({ selectedAsset, timeframe }) => {
-  const chartContainerRef = useRef(null);
-  const chartRef = useRef(null);
-  const seriesRef = useRef(null);
+  const [priceData, setPriceData] = useState(null);
+  const [tradingSignal, setTradingSignal] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [chartData, setChartData] = React.useState([]);
-  const [metrics, setMetrics] = React.useState({
-    currentPrice: 0,
-    change: 0,
-    high: 0,
-    low: 0,
-    volume: 0,
-  });
 
   useEffect(() => {
-    const fetchChartData = async () => {
+    // TODO: Replace with actual API call
+    const fetchData = async () => {
+      setLoading(true);
       try {
-        setLoading(true);
-        setError(null);
-        const response = await fetch(`/api/chart/${encodeURIComponent(selectedAsset)}?timeframe=${timeframe}`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch chart data');
-        }
-        const data = await response.json();
-        
-        if (chartContainerRef.current) {
-          // Clean up existing chart
-          if (chartRef.current) {
-            chartRef.current.remove();
+        // Simulated API response
+        const mockData = {
+          prices: Array.from({ length: 100 }, (_, i) => ({
+            time: new Date(Date.now() - (100 - i) * 60000).toISOString(),
+            price: 100 + Math.random() * 10
+          })),
+          signal: {
+            action: Math.random() > 0.5 ? 'BUY' : 'SELL',
+            confidence: Math.random() * 100,
+            timestamp: new Date().toISOString()
           }
+        };
 
-          // Create new chart
-          const chart = createChart(chartContainerRef.current, {
-            width: chartContainerRef.current.clientWidth,
-            height: 400,
-            layout: {
-              background: { color: '#1e1e1e' },
-              textColor: '#d1d4dc',
-            },
-            grid: {
-              vertLines: { color: '#2B2B43' },
-              horzLines: { color: '#2B2B43' },
-            },
-          });
-
-          // Create candlestick series
-          const candlestickSeries = chart.addCandlestickSeries({
-            upColor: '#26a69a',
-            downColor: '#ef5350',
-            borderVisible: false,
-            wickUpColor: '#26a69a',
-            wickDownColor: '#ef5350',
-          });
-
-          // Set the data
-          candlestickSeries.setData(data);
-
-          // Store references
-          chartRef.current = chart;
-          seriesRef.current = candlestickSeries;
-
-          // Handle resize
-          const handleResize = () => {
-            if (chartContainerRef.current && chartRef.current) {
-              chartRef.current.applyOptions({
-                width: chartContainerRef.current.clientWidth,
-              });
-            }
-          };
-
-          window.addEventListener('resize', handleResize);
-          return () => {
-            window.removeEventListener('resize', handleResize);
-            if (chartRef.current) {
-              chartRef.current.remove();
-            }
-          };
-        }
-      } catch (err) {
-        console.error('Error initializing chart:', err);
-        setError(err.message);
+        setPriceData(mockData.prices);
+        setTradingSignal(mockData.signal);
+      } catch (error) {
+        console.error('Error fetching data:', error);
       } finally {
         setLoading(false);
       }
     };
 
-    if (selectedAsset && timeframe) {
-      fetchChartData();
-    }
+    fetchData();
   }, [selectedAsset, timeframe]);
+
+  const chartData = {
+    labels: priceData?.map(d => new Date(d.time).toLocaleTimeString()) || [],
+    datasets: [
+      {
+        label: 'Price',
+        data: priceData?.map(d => d.price) || [],
+        borderColor: 'rgb(75, 192, 192)',
+        tension: 0.1,
+        fill: false
+      }
+    ]
+  };
+
+  const chartOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: `${selectedAsset} Price Chart (${timeframe})`
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: false
+      }
+    }
+  };
 
   if (loading) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 400 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
         <CircularProgress />
       </Box>
     );
   }
 
-  if (error) {
-    return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 400 }}>
-        <Typography color="error">Error: {error}</Typography>
-      </Box>
-    );
-  }
-
   return (
-    <Box>
-      <Box sx={{ mb: 3 }}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          {selectedAsset} Analysis
-        </Typography>
-        <Typography variant="subtitle1" color="text.secondary">
-          {timeframe} Timeframe
-        </Typography>
-      </Box>
+    <Box sx={{ flexGrow: 1 }}>
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <Paper sx={{ p: 2 }}>
+            <Line data={chartData} options={chartOptions} />
+          </Paper>
+        </Grid>
 
-      <Grid container spacing={2} sx={{ mb: 3 }}>
-        <Grid item xs={12} sm={6} md={3}>
-          <MetricCard>
-            <Typography variant="subtitle2" color="text.secondary">
-              Current Price
-            </Typography>
-            <Typography variant="h6">
-              {metrics.currentPrice.toFixed(2)}
-            </Typography>
-            <Chip
-              label={`${metrics.change >= 0 ? '+' : ''}${metrics.change.toFixed(2)}%`}
-              color={metrics.change >= 0 ? 'success' : 'error'}
-              size="small"
-            />
-          </MetricCard>
+        <Grid item xs={12} md={6}>
+          <Card sx={{ 
+            background: 'linear-gradient(45deg, #1a237e 30%, #0d47a1 90%)',
+            color: 'white'
+          }}>
+            <CardContent>
+              <Typography variant="h6" gutterBottom>
+                Trading Signal
+              </Typography>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+                <Chip
+                  icon={tradingSignal?.action === 'BUY' ? <TrendingUpIcon /> : <TrendingDownIcon />}
+                  label={tradingSignal?.action}
+                  color={tradingSignal?.action === 'BUY' ? 'success' : 'error'}
+                  sx={{ color: 'white' }}
+                />
+                <Typography variant="body1">
+                  Confidence: {tradingSignal?.confidence.toFixed(2)}%
+                </Typography>
+              </Box>
+              <Typography variant="body2" color="rgba(255,255,255,0.7)">
+                Last updated: {new Date(tradingSignal?.timestamp).toLocaleString()}
+              </Typography>
+            </CardContent>
+          </Card>
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <MetricCard>
-            <Typography variant="subtitle2" color="text.secondary">
-              24h High
-            </Typography>
-            <Typography variant="h6">
-              {metrics.high.toFixed(2)}
-            </Typography>
-          </MetricCard>
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <MetricCard>
-            <Typography variant="subtitle2" color="text.secondary">
-              24h Low
-            </Typography>
-            <Typography variant="h6">
-              {metrics.low.toFixed(2)}
-            </Typography>
-          </MetricCard>
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <MetricCard>
-            <Typography variant="subtitle2" color="text.secondary">
-              Volume
-            </Typography>
-            <Typography variant="h6">
-              {metrics.volume.toLocaleString()}
-            </Typography>
-          </MetricCard>
+
+        <Grid item xs={12} md={6}>
+          <Card sx={{ 
+            background: 'linear-gradient(45deg, #1a237e 30%, #0d47a1 90%)',
+            color: 'white'
+          }}>
+            <CardContent>
+              <Typography variant="h6" gutterBottom>
+                Quick Actions
+              </Typography>
+              <Box sx={{ display: 'flex', gap: 2 }}>
+                <Button
+                  variant="contained"
+                  color="success"
+                  startIcon={<TrendingUpIcon />}
+                  sx={{ flex: 1 }}
+                >
+                  Buy
+                </Button>
+                <Button
+                  variant="contained"
+                  color="error"
+                  startIcon={<TrendingDownIcon />}
+                  sx={{ flex: 1 }}
+                >
+                  Sell
+                </Button>
+              </Box>
+            </CardContent>
+          </Card>
         </Grid>
       </Grid>
-
-      <Paper sx={{ p: 2 }}>
-        <ChartContainer ref={chartContainerRef} />
-      </Paper>
     </Box>
   );
 };
